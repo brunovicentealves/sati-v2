@@ -15,6 +15,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private ImplementsUserDetailsService userDetailsService;
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
@@ -40,11 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-        builder
-                .inMemoryAuthentication()
-                .withUser("bruno").password("$2a$10$tUk/jkYl54G4FBifoHoPme.M/ADX4nG21T1OxTcYQG8h/6DakLji6").roles("ADMIN","EDITOR")
-                .and()
-                .withUser("anderson").password("$2a$10$tUk/jkYl54G4FBifoHoPme.M/ADX4nG21T1OxTcYQG8h/6DakLji6").roles("EDITOR");
+        builder.userDetailsService(userDetailsService).
+                passwordEncoder(new BCryptPasswordEncoder());
+
     }
 
 
