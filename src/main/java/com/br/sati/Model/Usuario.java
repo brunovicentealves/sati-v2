@@ -3,12 +3,15 @@ package com.br.sati.Model;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
-public class Usuario implements UserDetails {
+public class Usuario implements UserDetails, Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     private String login;
@@ -16,6 +19,15 @@ public class Usuario implements UserDetails {
     private String nomeCompleto;
 
     private String senha;
+
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(
+            name = "usuario_acesso",
+            joinColumns = @JoinColumn(
+                    name = "usuario_id", referencedColumnName = "login"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "acesso_id", referencedColumnName = "nomeAcesso"))
+    private List<NivelAcesso> nivelAcessos = new ArrayList<>();
 
     public String getLogin() {
         return login;
@@ -41,9 +53,17 @@ public class Usuario implements UserDetails {
         this.senha = senha;
     }
 
+    public List<NivelAcesso> getNivelAcessos() {
+        return nivelAcessos;
+    }
+
+    public void setNivelAcessos(List<NivelAcesso> nivelAcessos) {
+        this.nivelAcessos = nivelAcessos;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return nivelAcessos;
     }
 
     @Override
