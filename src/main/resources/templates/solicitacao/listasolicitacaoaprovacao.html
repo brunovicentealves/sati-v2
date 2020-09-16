@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Lista de pedidos </title>
+    <title>Aprovacao Equipamento</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript"
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -24,38 +24,51 @@
 </head>
 <body>
 <div layout:fragment="content">
+    <div class="page-header text-center">
+        <h1>Aprovação Solicitação</h1>
+    </div>
+    <br>
+    <div th:if="${mensagem != null}">
+        <div class="alert alert-info" role="alert">
+            <span th:text="${mensagem}">mensagem</span>
+        </div>
+    </div>
+    <br>
+    <table id="todotable" class="table table-striped">
+        <thead>
+        <tr>
+            <th class="text-center" style='width: 10%' >Nº</th>
+            <th class="text-center" style='width: 15%'>Data</th>
+            <th class="text-center" style='width: 15%'>Status</th>
+            <th class="text-center">Equipamento</th>
+            <th class="text-center">Colaborador</th>
+            <th class="text-center" style='width: 15%'>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="solicitacao : ${solicitacoes}">
+            <td class="text-center" th:text="${solicitacao.idSolicitacao}"></td>
+            <td class="text-center" th:text="${solicitacao.data}"></td>
+            <td class="text-center" th:text="${solicitacao.status}"></td>
+            <td class="text-center" th:text="${solicitacao.equipamento.nomeEquipamento}"></td>
+            <td class="text-center" th:text="${solicitacao.funcionario.nome}"></td>
+            <td class="text-center" >
+                <a th:href="@{/solicitacao/{id}/editar-aprovar(id=${solicitacao.idSolicitacao})}" >
+                    <img alt="Aprovado" th:src="@{/images/aprovado.png}"/>
+                </a>
+                <a th:href="@{/solicitacao/{id}/editar-reprovar(id=${solicitacao.idSolicitacao})}" >
+                    <img alt="Reprovado" th:src="@{/images/delete.png}"/>
+                </a>
+                <a th:href="@{/solicitacao/{id}/visualizar-aprovacao(id=${solicitacao.idSolicitacao})}" >
+                    <img alt="Aprovado" th:src="@{/images/visualizar.png}"/>
+                </a>
+            </td>
 
-<table id="todotable" class="table table-striped">
-    <thead>
-    <tr>
-        <th>Description</th>
-        <th>Status</th>
-        <th>CreatedDate</th>
-        <th>CreatedBy</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>Tiger Nixon</td>
-        <td>System Architect</td>
-        <td>Edinburgh</td>
-        <td>61</td>
-    </tr>
-    <tr>
-        <td>bruno</td>
-        <td>System Architect</td>
-        <td>Edinburgh</td>
-        <td>61</td>
-    </tr>
-    <tr>
-        <td>Juliana</td>
-        <td>System Architect</td>
-        <td>Edinburgh</td>
-        <td>61</td>
-    </tr>
-    </tbody>
-</table>
-<script type="text/javascript">
+        </tr>
+
+        </tbody>
+    </table>
+    <script type="text/javascript">
 		$(document).ready(function() {
     $('#todotable').DataTable({
 

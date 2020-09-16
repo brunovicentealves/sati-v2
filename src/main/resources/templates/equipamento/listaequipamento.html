@@ -34,7 +34,7 @@
         </div>
     </div>
     <div>
-        <a class="btn btn-primary"  th:href="@{/produto/cadastroproduto}"> Novo Equipamento</a>
+        <a class="btn btn-primary"  th:href="@{/equipamento/cadastro-equipamento}"> Novo Equipamento</a>
     </div>
     <br>
     <table id="todotable" class="table table-striped">
@@ -46,10 +46,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="produto : ${produtos}">
-            <td th:text="${produto.nomeProduto}"></td>
-            <td th:text="${produto.descricao}"></td>
-            <td class="text-center" ><img th:src="@{/images/visualizar.png}"/><img th:src="@{/images/editar.png}"/><img th:src="@{/images/excluir.png}"/></td>
+        <tr th:each="equipamento : ${equipamentos}">
+            <td th:text="${equipamento.nomeEquipamento}"></td>
+            <td th:text="${equipamento.descricao}"></td>
+            <td class="text-center" >
+                <a th:href="@{/equipamento/{id}/visualizar-equipamento(id=${equipamento.id})}" >
+                <img  alt="Visualizar" th:src="@{/images/visualizar.png}"/>
+                </a>
+                <a th:href="@{/equipamento/{id}/atualizar-equipamento(id=${equipamento.id})}" >
+                    <img alt="Editar" th:src="@{/images/editar.png}"/>
+                </a>
+                <a th:href="@{/equipamento/{id}/remover-equipamento(id=${equipamento.id})}" onclick="return confirm('Deseja deletar?');" >
+                    <img alt="Deletar" th:src="@{/images/excluir.png}"/></td>
+                </a>
         </tr>
         </tbody>
     </table>

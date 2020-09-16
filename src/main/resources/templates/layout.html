@@ -23,13 +23,16 @@
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item" sec:authorize="hasRole('USER')"  >
-                <a class="nav-link" href=/produto/listaproduto>Equipamentos</a>
+                <a class="nav-link" href=/equipamento/lista-equipamento>Equipamentos</a>
             </li>
             <li class="nav-item" sec:authorize="hasRole('ADMIN')"  >
-                <a class="nav-link" href=/produto/listaproduto>Equipamentos</a>
+                <a class="nav-link" href=/equipamento/lista-equipamento>Equipamentos</a>
             </li>
-            <li class="nav-item" sec:authorize="hasRole('ADMIN')" >
-                <a class="nav-link" href="/lista-pedidos-aprovacao">Pedido Equipamento</a>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')"  >
+                <a class="nav-link" href="/solicitacao/lista-solicitacao">Solicitação Equipamento</a>
+            </li>
+            <li class="nav-item" sec:authorize="hasRole('ADMIN')"  >
+                <a class="nav-link" href="/solicitacao/lista-solicitacaoaprovacao">Aprovação Solicitação</a>
             </li>
         </ul>
         <div class="btn-group">
