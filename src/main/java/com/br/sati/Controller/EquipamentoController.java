@@ -21,10 +21,10 @@ import java.util.Optional;
 public class EquipamentoController {
 
     @Autowired
-    private EquipamentoServiceImple equipamentoServiceImple;
+        private EquipamentoServiceImple equipamentoServiceImple;
 
-    @GetMapping("/equipamento/lista-equipamento")
-    public ModelAndView listarProduto(ModelMap model) {
+        @GetMapping("/equipamento/lista-equipamento")
+        public ModelAndView listarProduto(ModelMap model) {
         model.addAttribute("equipamentos", equipamentoServiceImple.lista());
         return new ModelAndView("equipamento/listaequipamento", model);
     }
@@ -46,7 +46,7 @@ public class EquipamentoController {
 
     }
 
-    @GetMapping("equipamento/{id}/atualizar-equipamento")
+    @GetMapping("/equipamento/{id}/atualizar-equipamento")
     public ModelAndView preAtualizar(@PathVariable("id") long id, ModelMap model) {
        Equipamento equipamento = equipamentoServiceImple.RecuperarPorId(id).get();
         model.addAttribute("equipamento", equipamento);
@@ -64,7 +64,7 @@ public class EquipamentoController {
         return new ModelAndView("redirect:/equipamento/lista-equipamento");
     }
 
-    @GetMapping("equipamento/{id}/visualizar-equipamento")
+    @GetMapping("/equipamento/{id}/visualizar-equipamento")
     public ModelAndView visualizarProduto(@PathVariable("id") long id, ModelMap model) {
         Equipamento equipamento = equipamentoServiceImple.RecuperarPorId(id).get();
         model.addAttribute("equipamento", equipamento);
@@ -73,7 +73,7 @@ public class EquipamentoController {
 
 
 
-    @GetMapping("equipamento/{id}/remover-equipamento")
+    @GetMapping("/equipamento/{id}/remover-equipamento")
     public String remover (@PathVariable("id") long id , RedirectAttributes attr){
         equipamentoServiceImple.Excluir(id);
         attr.addFlashAttribute("mensagem", "Equipamento  Excluido  com sucesso.");

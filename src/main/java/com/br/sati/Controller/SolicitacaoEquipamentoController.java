@@ -1,6 +1,7 @@
 package com.br.sati.Controller;
 
 import com.br.sati.Model.Equipamento;
+import com.br.sati.Model.Funcionario;
 import com.br.sati.Model.SolicitacaoEquipamento;
 import com.br.sati.Service.EquipamentoServiceImple;
 import com.br.sati.Service.FuncionarioServiceImpl;
@@ -31,13 +32,13 @@ public class SolicitacaoEquipamentoController {
     private FuncionarioServiceImpl  funcionarioServiceImpl;
 
 
-    @GetMapping("solicitacao/lista-solicitacao")
+    @GetMapping("/solicitacao/lista-solicitacao")
     public ModelAndView listarsolicitacaoequipamento(ModelMap model) {
         model.addAttribute("solicitacoes",solicitacaoEquipamentoService.listaSolicitacaoEquipamentoStatus("Aguardando Aprovação"));
         return new ModelAndView("solicitacao/listasolicitacao", model);
     }
 
-    @GetMapping("solicitacao/cadastro-solicitacao")
+    @GetMapping("/solicitacao/cadastro-solicitacao")
     public ModelAndView preSalvar (@ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento , ModelMap model){
         model.addAttribute("equipamento",equipamentoServiceImpl.lista());
         model.addAttribute("funcionario",funcionarioServiceImpl.listaFuncionario());
@@ -58,6 +59,38 @@ public class SolicitacaoEquipamentoController {
 
     }
 
+    @GetMapping("/solicitacao/{id}/atualizar-solicitacao")
+    public ModelAndView preAtualizarSolicitacao(@PathVariable("id") long id, ModelMap model) {
+       SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
+
+        model.addAttribute("funcionario",  funcionarioServiceImpl.listaFuncionario());
+        model.addAttribute("equipamento",  equipamentoServiceImpl.lista());
+        model.addAttribute("solicitacao", solicitacaoEquipamento);
+        return new ModelAndView("solicitacao/editasolicitacao",model);
+    }
+
+
+    @PostMapping("/solicitacao/editar-solicitacao")
+    public ModelAndView atualizar(@Valid @ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento , BindingResult result, RedirectAttributes attr) {
+        if (result.hasErrors()) {
+            return new ModelAndView("/solicitacao/editasolicitacao");
+        }
+        SolicitacaoEquipamento solicitacaoEquipamento1 = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(solicitacaoEquipamento.getIdSolicitacao()).get();
+            solicitacaoEquipamento.setStatus(solicitacaoEquipamento1.getStatus());
+            solicitacaoEquipamento.setData(solicitacaoEquipamento1.getData());
+            solicitacaoEquipamentoService.atualizarSolicitacaoEquipamento(solicitacaoEquipamento);
+        attr.addFlashAttribute("mensagem", "Solicitação atualizado com sucesso.");
+        return new ModelAndView("redirect:/solicitacao/lista-solicitacao");
+    }
+
+    @GetMapping("/solicitacao/{id}/visualizar-solicitacao")
+    public ModelAndView visualizarSolicitacao(@PathVariable("id") long id, ModelMap model) {
+        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
+        model.addAttribute("solicitacao", solicitacaoEquipamento);
+        return new ModelAndView("solicitacao/visualizacaosolicitacao",model);
+    }
+
+
     @GetMapping("solicitacao/{id}/remover-solicitacao")
     public String remover (@PathVariable("id") long id , RedirectAttributes attr){
         solicitacaoEquipamentoService.ExcluirSolicitacaoEquipamento(id);
@@ -68,13 +101,13 @@ public class SolicitacaoEquipamentoController {
     //edpoint da tela de aprovação da solicitação
     //********************************************
 
-    @GetMapping("solicitacao/lista-solicitacaoaprovacao")
+    @GetMapping("/solicitacao/lista-solicitacaoaprovacao")
     public ModelAndView listarSolicitacaoEquipamentoAprovacao(ModelMap model) {
         model.addAttribute("solicitacoes",solicitacaoEquipamentoService.listaSolicitacaoEquipamentoStatus("Aguardando Aprovação"));
-        return new ModelAndView("solicitacao/listasolicitacaoaprovacao", model);
+        return new ModelAndView("aprovacao/listasolicitacaoaprovacao", model);
     }
 
-    @GetMapping("solicitacao/{id}/editar-aprovar")
+    @GetMapping("/solicitacao/{id}/editar-aprovar")
     public String aprovarSolicitacao (@PathVariable("id") long id ,RedirectAttributes attr){
 
        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();

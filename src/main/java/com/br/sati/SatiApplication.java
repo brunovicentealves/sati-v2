@@ -23,9 +23,6 @@ public class SatiApplication implements CommandLineRunner {
 	public static void main(String[] args) {
 		SpringApplication.run(SatiApplication.class, args);
 		System.out.print(new BCryptPasswordEncoder().encode("tbs@2020"));
-
-
-
 	}
 
     @Override

@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Solicitacao Equipamento</title>
+    <title>Histórico </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript"
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -25,47 +25,41 @@
 <body>
 <div layout:fragment="content">
     <div class="page-header text-center">
-        <h1>Solicitacao Equipamentos</h1>
+        <h1>Histórico</h1>
     </div>
     <br>
     <div th:if="${mensagem != null}">
-        <div class="alert alert-secondary" role="alert">
+        <div class="alert alert-info" role="alert">
             <span th:text="${mensagem}">mensagem</span>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
     </div>
     <div>
-        <a class="btn btn-primary"  th:href="@{/solicitacao/cadastro-solicitacao}"> Nova Solicitação</a>
+        <a class="btn btn-primary"  th:href="@{/equipamento/cadastro-equipamento}"> Novo Equipamento</a>
     </div>
     <br>
     <table id="todotable" class="table table-striped">
         <thead>
         <tr>
-            <th class="text-center">Nº_Solicitação</th>
-            <th class="text-center">Data</th>
-            <th class="text-center">Status</th>
+            <th class="text-center">Nome</th>
+            <th class="text-center">Descricao</th>
             <th class="text-center" style='width: 15%'>Ações</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="solicitacao : ${solicitacoes}" th:object="${solicitacao}">
-            <td class="texte-center"  th:text="${solicitacao.idSolicitacao}" ></td>
-            <td class="texte-center" th:text="${solicitacao.data}"></td>
-            <td class="texte-center" th:text="${solicitacao.status}"></td>
+        <tr th:each="equipamento : ${equipamentos}">
+            <td th:text="${equipamento.nomeEquipamento}"></td>
+            <td th:text="${equipamento.descricao}"></td>
             <td class="text-center" >
-                <a th:href="@{/solicitacao/{id}/visualizar-solicitacao(id=${solicitacao.idSolicitacao})}" >
-                    <img alt="Visualizar" th:src="@{/images/visualizar.png}"/>
+                <a th:href="@{/equipamento/{id}/visualizar-equipamento(id=${equipamento.id})}" >
+                    <img  alt="Visualizar" th:src="@{/images/visualizar.png}"/>
                 </a>
-                <a th:href="@{/solicitacao/{id}/atualizar-solicitacao(id=${solicitacao.idSolicitacao})}" >
+                <a th:href="@{/equipamento/{id}/atualizar-equipamento(id=${equipamento.id})}" >
                     <img alt="Editar" th:src="@{/images/editar.png}"/>
                 </a>
-                <a th:href="@{/solicitacao/{id}/remover-solicitacao(id=${solicitacao.idSolicitacao})}" onclick="return confirm('Deseja deletar?');" >
-                    <img  alt="Deletar" th:src="@{/images/excluir.png}"/></td>
+                <a th:href="@{/equipamento/{id}/remover-equipamento(id=${equipamento.id})}" onclick="return confirm('Deseja deletar?');" >
+                    <img alt="Deletar" th:src="@{/images/excluir.png}"/></td>
             </a>
         </tr>
-
         </tbody>
     </table>
     <script type="text/javascript">

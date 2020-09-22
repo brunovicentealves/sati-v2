@@ -10,7 +10,7 @@ public class HistoricoEquipamento {
 
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY )
-    private long idHistoricoProduto;
+    private long idHistorico;
 
     @ManyToOne
     @JoinColumn(name = "codEquipamento",nullable = false)
@@ -29,11 +29,11 @@ public class HistoricoEquipamento {
 
 
     public long getIdHistoricoProduto() {
-        return idHistoricoProduto;
+        return idHistorico;
     }
 
     public void setIdHistoricoProduto(long idHistoricoProduto) {
-        this.idHistoricoProduto = idHistoricoProduto;
+        this.idHistorico = idHistoricoProduto;
     }
 
     public Equipamento getEquipamento() {
