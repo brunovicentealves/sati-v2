@@ -5,6 +5,7 @@ import com.br.sati.Repository.HistoricoEquipamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,27 +16,44 @@ public class HistoricoEquipamentoServiceImpl implements HistoricoEquipamentoServ
     private HistoricoEquipamentoRepository historicoEquipamentoRepository;
 
     @Override
-    public void salvarHistorico(HistoricoEquipamento historicoEquipamento) {
-        historicoEquipamentoRepository.save(historicoEquipamento);
+    public String salvarHistorico(HistoricoEquipamento historicoEquipamento) {
+        try {
+            historicoEquipamentoRepository.save(historicoEquipamento);
+            return "Histórico Salvo com Sucesso";
+        }catch (Exception e){
+            return "Não foi possivel Salvar esse Histórico!"+e.getMessage();
+        }
     }
 
     @Override
-    public List<HistoricoEquipamento> listaHisotorico() {
+    public List<HistoricoEquipamento> listaHistorico() throws SQLException {
         return (List<HistoricoEquipamento>) historicoEquipamentoRepository.findAll();
     }
 
     @Override
-    public Optional<HistoricoEquipamento> RecuperarPorIdHistorico(Long idHisotorico) {
+    public Optional<HistoricoEquipamento> RecuperarPorIdHistorico(Long idHisotorico) throws SQLException {
         return historicoEquipamentoRepository.findById(idHisotorico);
     }
 
     @Override
-    public void atualizarHisotrico(HistoricoEquipamento historicoEquipamento) {
-        historicoEquipamentoRepository.save(historicoEquipamento);
+    public String atualizarHistorico(HistoricoEquipamento historicoEquipamento) {
+        try {
+            historicoEquipamentoRepository.save(historicoEquipamento);
+            return "Atualizado com sucesso o Histórico";
+        }catch (Exception e){
+            return "Não foi possivel Atualizar esse histórico! --"+e.getMessage();
+        }
+
     }
 
     @Override
-    public void ExcluirHistorico(Long idHistorico) {
+    public String ExcluirHistorico(Long idHistorico) {
+        try {
             historicoEquipamentoRepository.deleteById(idHistorico);
+            return "Excluido com sucesso o Histórico";
+        }catch (Exception e ){
+            return "Não foi Poessivel Excluir Historico de Equipamento!";
+        }
+
     }
 }

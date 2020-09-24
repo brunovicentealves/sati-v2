@@ -5,6 +5,7 @@ import com.br.sati.Repository.SolicitacaoEquipamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -18,13 +19,17 @@ public class SolicitacaoEquipamentoServiceImpl implements SolicitacaoEquipamento
     }
 
     @Override
-    public void salvarSolicitacaoEquipamento(SolicitacaoEquipamento solicitacaoEquipamento) {
-
+    public String salvarSolicitacaoEquipamento(SolicitacaoEquipamento solicitacaoEquipamento) throws SQLException {
+    try {
         solicitacaoEquipamentoRepository.save(solicitacaoEquipamento);
+        return "Cadastrado Com Sucesso Solictação!";
+    }catch (Exception e ){
+        return "Não possivel cadastrar Solicitação! --"+e.getMessage();
     }
+}
 
     @Override
-    public List<SolicitacaoEquipamento> listaSolicitacaoEquipamento() {
+    public List<SolicitacaoEquipamento> listaSolicitacaoEquipamento()  throws SQLException {
         return (List<SolicitacaoEquipamento>) solicitacaoEquipamentoRepository.findAll();
     }
 
@@ -34,16 +39,26 @@ public class SolicitacaoEquipamentoServiceImpl implements SolicitacaoEquipamento
     }
 
     @Override
-    public void atualizarSolicitacaoEquipamento(SolicitacaoEquipamento solicitacaoEquipamento) {
-        solicitacaoEquipamentoRepository.save(solicitacaoEquipamento);
+    public String atualizarSolicitacaoEquipamento(SolicitacaoEquipamento solicitacaoEquipamento) {
+        try {
+            solicitacaoEquipamentoRepository.save(solicitacaoEquipamento);
+            return "Atualizado com sucesso  Solicitação";
+        }catch (Exception e ){
+        return "Não foi possivel Atualizar essa Solicitação! --"+e.getMessage();
+        }
     }
 
     @Override
-    public void ExcluirSolicitacaoEquipamento(Long idSolicitacao) {
-            solicitacaoEquipamentoRepository.deleteById(idSolicitacao);
+    public String ExcluirSolicitacaoEquipamento(Long idSolicitacao) {
+            try {
+                solicitacaoEquipamentoRepository.deleteById(idSolicitacao);
+                return "Solicitação Excluida com Sucesso";
+            }catch (Exception e ){
+                return "Não foi possivel Excluir essa solicitacao ela pode estar sendo usada em outra parte do sistema f";
+            }
     }
 
-    public List<SolicitacaoEquipamento> listaSolicitacaoEquipamentoStatus(String status){
+    public List<SolicitacaoEquipamento> listaSolicitacaoEquipamentoStatus(String status) throws SQLException{
       return  solicitacaoEquipamentoRepository.findByStatusOrderByDataDesc(status);
     }
 

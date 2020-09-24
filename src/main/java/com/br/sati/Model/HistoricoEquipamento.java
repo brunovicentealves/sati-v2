@@ -22,17 +22,19 @@ public class HistoricoEquipamento {
 
     @NotNull
     @NotBlank(message = "Preechar o campo com Patrimonio da Máquina")
-    private String patrimonioMaquina;
+    private String patrimonioEquipamento;
 
     @NotNull
     private Date data;
 
+    private String logUsuario;
 
-    public long getIdHistoricoProduto() {
+
+    public long getIdHistorico() {
         return idHistorico;
     }
 
-    public void setIdHistoricoProduto(long idHistoricoProduto) {
+    public void setIdHistorico(long idHistoricoProduto) {
         this.idHistorico = idHistoricoProduto;
     }
 
@@ -52,12 +54,12 @@ public class HistoricoEquipamento {
         this.funcionario = funcionario;
     }
 
-    public String getPatrimonioMaquina() {
-        return patrimonioMaquina;
+    public String getPatrimonioEquipamento() {
+        return patrimonioEquipamento;
     }
 
-    public void setPatrimonioMaquina(String patrimonioMaquina) {
-        this.patrimonioMaquina = patrimonioMaquina;
+    public void setPatrimonioMaquina(String patrimonioEquipamento) {
+        this.patrimonioEquipamento = patrimonioEquipamento;
     }
 
     public Date getData() {

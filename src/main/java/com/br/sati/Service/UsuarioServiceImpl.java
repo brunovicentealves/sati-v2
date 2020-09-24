@@ -19,8 +19,13 @@ public class UsuarioServiceImpl  implements UsuarioService{
     }
 
     @Override
-    public void salvarUsuario(Usuario usuario) {
-        usuarioRepository.save(usuario);
+    public String salvarUsuario(Usuario usuario) {
+        try {
+            usuarioRepository.save(usuario);
+            return "Cadastrado com sucesso o usuário!";
+        }catch (Exception e ){
+            return "Não foi Possivel Cadastrar Usuario! --"+e.getMessage();
+        }
     }
 
     @Override
@@ -34,12 +39,23 @@ public class UsuarioServiceImpl  implements UsuarioService{
     }
 
     @Override
-    public void atualizarUsuario(Usuario usuario) {
-        usuarioRepository.save(usuario);
+    public String atualizarUsuario(Usuario usuario) {
+        try {
+            usuarioRepository.save(usuario);
+            return "Atualzado com sucesso o Usuário!";
+        }catch (Exception e ){
+            return "Não foi possivel atualizar Usuário! --"+e.getMessage();
+        }
     }
 
     @Override
-    public void ExcluirUsuario(String login) {
-        usuarioRepository.deleteById(login);
+    public String ExcluirUsuario(String login) {
+        try {
+            usuarioRepository.deleteById(login);
+            return "Excluido com Sucesso Usuario!";
+        }catch (Exception e ){
+            return "Não possivel excluir porque o dados podem estar sendo usado em outra parte do sistema!";
+        }
+
     }
 }

@@ -2,14 +2,15 @@ package com.br.sati.Service;
 
 import com.br.sati.Model.Funcionario;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
 public interface FuncionarioService {
 
-    void salvarFuncionario(Funcionario funcionario);
-    List<Funcionario> listaFuncionario();
-    Optional<Funcionario> RecuperarPorIdFuncionario(Long chapa);
-    void atualizarFuncionario(Funcionario funcionario);
-    void ExcluirFuncionario(Long id);
+    String salvarFuncionario(Funcionario funcionario);
+    List<Funcionario> listaFuncionario() throws SQLException;
+    Optional<Funcionario> RecuperarPorIdFuncionario(Long chapa) throws SQLException;
+    String atualizarFuncionario(Funcionario funcionario);
+    String ExcluirFuncionario(Long id);
 }

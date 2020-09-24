@@ -23,6 +23,8 @@ public class SolicitacaoEquipamento implements Serializable {
 
     private String descricao;
 
+    private String logUsuario;
+
     @ManyToOne
     @JoinColumn(name = "codFuncionario", nullable = false)
     private Funcionario funcionario;
@@ -83,5 +85,13 @@ public class SolicitacaoEquipamento implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getLogUsuario() {
+        return logUsuario;
+    }
+
+    public void setLogUsuario(String logUsuario) {
+        this.logUsuario = logUsuario;
     }
 }

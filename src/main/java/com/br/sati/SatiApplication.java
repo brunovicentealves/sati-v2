@@ -1,15 +1,23 @@
 package com.br.sati;
 
-import com.br.sati.Model.NivelAcesso;
-import com.br.sati.Model.Usuario;
+import com.br.sati.Controller.SolicitacaoEquipamentoController;
+import com.br.sati.Model.*;
+import com.br.sati.Repository.HistoricoEquipamentoRepository;
 import com.br.sati.Repository.NivelAcessoRepository;
+import com.br.sati.Repository.SolicitacaoEquipamentoRepository;
 import com.br.sati.Repository.UsuarioRepository;
 
+import com.br.sati.Service.EquipamentoServiceImple;
+import com.br.sati.Service.FuncionarioServiceImpl;
+import com.br.sati.Service.SolicitacaoEquipamentoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import java.util.Date;
+import java.util.Optional;
 
 
 @SpringBootApplication
@@ -19,6 +27,15 @@ public class SatiApplication implements CommandLineRunner {
     private NivelAcessoRepository nivelAcessoRepository;
     @Autowired
      private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private FuncionarioServiceImpl funcionarioServiceImpl;
+
+    @Autowired
+    EquipamentoServiceImple equipamentoServiceImple;
+
+    @Autowired
+    private HistoricoEquipamentoRepository historicoEquipamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SatiApplication.class, args);
@@ -41,6 +58,20 @@ public class SatiApplication implements CommandLineRunner {
         usuario.getNivelAcessos().add(nivelAcesso);
 
         usuarioRepository.save(usuario);
+
+
+        Funcionario funcionario = funcionarioServiceImpl.RecuperarPorIdFuncionario(Long.valueOf(1)).get();
+        Equipamento equipamento = equipamentoServiceImple.RecuperarPorId(Long.valueOf(10)).get();
+
+        HistoricoEquipamento historicoEquipamento = new HistoricoEquipamento();
+        historicoEquipamento.setIdHistorico(Long.valueOf(1));
+        historicoEquipamento.setEquipamento(equipamento);
+        historicoEquipamento.setFuncionario(funcionario);
+        Date data = new Date();
+        historicoEquipamento.setData(data);
+        historicoEquipamento.setPatrimonioMaquina("12123213");
+
+        historicoEquipamentoRepository.save(historicoEquipamento);
 
 
     }

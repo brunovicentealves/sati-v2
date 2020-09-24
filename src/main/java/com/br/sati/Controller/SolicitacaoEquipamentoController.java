@@ -18,49 +18,58 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Controller
 public class SolicitacaoEquipamentoController {
-    @Autowired
+
     private SolicitacaoEquipamentoServiceImpl solicitacaoEquipamentoService ;
-
-    @Autowired
     private EquipamentoServiceImple equipamentoServiceImpl ;
-    @Autowired
     private FuncionarioServiceImpl  funcionarioServiceImpl;
-
+    @Autowired
+    public SolicitacaoEquipamentoController(SolicitacaoEquipamentoServiceImpl solicitacaoEquipamentoService) {
+        this.solicitacaoEquipamentoService = solicitacaoEquipamentoService;
+    }
+    @Autowired
+    public SolicitacaoEquipamentoController(EquipamentoServiceImple equipamentoServiceImpl) {
+        this.equipamentoServiceImpl = equipamentoServiceImpl;
+    }
+    @Autowired
+    public SolicitacaoEquipamentoController(FuncionarioServiceImpl funcionarioServiceImpl) {
+        this.funcionarioServiceImpl = funcionarioServiceImpl;
+    }
 
     @GetMapping("/solicitacao/lista-solicitacao")
-    public ModelAndView listarsolicitacaoequipamento(ModelMap model) {
+    public ModelAndView listarsolicitacaoequipamento(ModelMap model) throws SQLException {
         model.addAttribute("solicitacoes",solicitacaoEquipamentoService.listaSolicitacaoEquipamentoStatus("Aguardando Aprovação"));
         return new ModelAndView("solicitacao/listasolicitacao", model);
     }
 
     @GetMapping("/solicitacao/cadastro-solicitacao")
-    public ModelAndView preSalvar (@ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento , ModelMap model){
+    public ModelAndView preSalvar (@ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento , ModelMap model) throws SQLException {
         model.addAttribute("equipamento",equipamentoServiceImpl.lista());
         model.addAttribute("funcionario",funcionarioServiceImpl.listaFuncionario());
         return new ModelAndView("solicitacao/cadastrosolicitacao",model);
     }
 
     @PostMapping("/solicitacao/salvar-solicitacao")
-    public String salvar(@Valid @ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento, BindingResult result, RedirectAttributes attr) {
+    public String salvar(@Valid @ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento, BindingResult result, RedirectAttributes attr) throws SQLException {
         if (result.hasErrors()) {
             return "solicitacao/cadastrosolicitacao";
         }
         Date data = new Date();
         solicitacaoEquipamento.setStatus("Aguardando Aprovação");
         solicitacaoEquipamento.setData(data);
-       solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
-        attr.addFlashAttribute("mensagem", "Solicitacao cadastrado  com sucesso.");
+      String mensagem = solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
+        attr.addFlashAttribute("mensagem", mensagem);
         return "redirect:/solicitacao/lista-solicitacao";
 
     }
 
     @GetMapping("/solicitacao/{id}/atualizar-solicitacao")
-    public ModelAndView preAtualizarSolicitacao(@PathVariable("id") long id, ModelMap model) {
+    public ModelAndView preAtualizarSolicitacao(@PathVariable("id") long id, ModelMap model) throws SQLException {
        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
 
         model.addAttribute("funcionario",  funcionarioServiceImpl.listaFuncionario());
@@ -78,8 +87,8 @@ public class SolicitacaoEquipamentoController {
         SolicitacaoEquipamento solicitacaoEquipamento1 = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(solicitacaoEquipamento.getIdSolicitacao()).get();
             solicitacaoEquipamento.setStatus(solicitacaoEquipamento1.getStatus());
             solicitacaoEquipamento.setData(solicitacaoEquipamento1.getData());
-            solicitacaoEquipamentoService.atualizarSolicitacaoEquipamento(solicitacaoEquipamento);
-        attr.addFlashAttribute("mensagem", "Solicitação atualizado com sucesso.");
+           String mensagem= solicitacaoEquipamentoService.atualizarSolicitacaoEquipamento(solicitacaoEquipamento);
+        attr.addFlashAttribute("mensagem", mensagem);
         return new ModelAndView("redirect:/solicitacao/lista-solicitacao");
     }
 
@@ -93,8 +102,8 @@ public class SolicitacaoEquipamentoController {
 
     @GetMapping("solicitacao/{id}/remover-solicitacao")
     public String remover (@PathVariable("id") long id , RedirectAttributes attr){
-        solicitacaoEquipamentoService.ExcluirSolicitacaoEquipamento(id);
-        attr.addFlashAttribute("mensagem", "Solicitacao  Excluido  com sucesso.");
+       String mensagem= solicitacaoEquipamentoService.ExcluirSolicitacaoEquipamento(id);
+        attr.addFlashAttribute("mensagem", mensagem);
         return "redirect:/solicitacao/lista-solicitacao";
     }
     //********************************************
@@ -102,13 +111,13 @@ public class SolicitacaoEquipamentoController {
     //********************************************
 
     @GetMapping("/solicitacao/lista-solicitacaoaprovacao")
-    public ModelAndView listarSolicitacaoEquipamentoAprovacao(ModelMap model) {
+    public ModelAndView listarSolicitacaoEquipamentoAprovacao(ModelMap model) throws SQLException {
         model.addAttribute("solicitacoes",solicitacaoEquipamentoService.listaSolicitacaoEquipamentoStatus("Aguardando Aprovação"));
         return new ModelAndView("aprovacao/listasolicitacaoaprovacao", model);
     }
 
     @GetMapping("/solicitacao/{id}/editar-aprovar")
-    public String aprovarSolicitacao (@PathVariable("id") long id ,RedirectAttributes attr){
+    public String aprovarSolicitacao (@PathVariable("id") long id ,RedirectAttributes attr) throws SQLException {
 
        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
        solicitacaoEquipamento.setStatus("Aprovado");
@@ -120,7 +129,7 @@ public class SolicitacaoEquipamentoController {
     }
 
     @GetMapping("solicitacao/{id}/editar-reprovar")
-    public String reprovarSolicitacao (@PathVariable("id") long id ,RedirectAttributes attr){
+    public String reprovarSolicitacao (@PathVariable("id") long id ,RedirectAttributes attr) throws SQLException {
 
         SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
         solicitacaoEquipamento.setStatus("Reprovado");

@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface UsuarioService {
 
-    void salvarUsuario (Usuario usuario);
+    String salvarUsuario (Usuario usuario);
     List<Usuario> listaUsuarios();
     Usuario RecuperarPorId(String login);
-    void atualizarUsuario(Usuario usuario);
-    void ExcluirUsuario(String login);
+    String atualizarUsuario(Usuario usuario);
+    String ExcluirUsuario(String login);
 
 }

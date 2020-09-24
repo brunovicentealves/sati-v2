@@ -18,8 +18,14 @@ import javax.validation.Valid;
 
 @Controller
 public class UsuarioController {
-    @Autowired
+
     private UsuarioServiceImpl usuarioServiceImpl;
+
+    @Autowired
+    public UsuarioController(UsuarioServiceImpl usuarioServiceImpl) {
+        this.usuarioServiceImpl = usuarioServiceImpl;
+
+    }
 
     @GetMapping("/perfil")
     public ModelAndView perfil(@ModelAttribute("usuario") Usuario usuario,ModelMap model ) {

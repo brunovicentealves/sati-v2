@@ -25,7 +25,7 @@
 <body>
 <div layout:fragment="content">
     <div class="page-header text-center">
-        <h1>Histórico</h1>
+        <h1>Histórico Equipamentos </h1>
     </div>
     <br>
     <div th:if="${mensagem != null}">
@@ -40,23 +40,27 @@
     <table id="todotable" class="table table-striped">
         <thead>
         <tr>
-            <th class="text-center">Nome</th>
-            <th class="text-center">Descricao</th>
+            <th class="text-center">Nome Equipamento</th>
+            <th class="text-center">Funcionario</th>
+            <th class="text-center">Patrimonio Equipamento</th>
+            <th class="text-center">Data</th>
             <th class="text-center" style='width: 15%'>Ações</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="equipamento : ${equipamentos}">
-            <td th:text="${equipamento.nomeEquipamento}"></td>
-            <td th:text="${equipamento.descricao}"></td>
+        <tr th:each="historico : ${historico}">
+            <td th:text="${historico.equipamento.nomeEquipamento}"></td>
+            <td th:text="${historico.funcionario.nome}"></td>
+            <td th:text="${historico.patrimonioEquipamento}"></td>
+            <td th:text="${historico.data}"></td>
             <td class="text-center" >
-                <a th:href="@{/equipamento/{id}/visualizar-equipamento(id=${equipamento.id})}" >
+                <a th:href="@{/historico/{id}/visualizar-historico(id=${historico.idHistorico})}" >
                     <img  alt="Visualizar" th:src="@{/images/visualizar.png}"/>
                 </a>
-                <a th:href="@{/equipamento/{id}/atualizar-equipamento(id=${equipamento.id})}" >
+                <a th:href="@{/historico/{id}/atualizar-historico(id=${historico.idHistorico})}" >
                     <img alt="Editar" th:src="@{/images/editar.png}"/>
                 </a>
-                <a th:href="@{/equipamento/{id}/remover-equipamento(id=${equipamento.id})}" onclick="return confirm('Deseja deletar?');" >
+                <a th:href="@{/historico/{id}/remover-historico(id=${historico.idHistorico})}" onclick="return confirm('Deseja deletar?');" >
                     <img alt="Deletar" th:src="@{/images/excluir.png}"/></td>
             </a>
         </tr>

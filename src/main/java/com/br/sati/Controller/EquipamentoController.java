@@ -15,16 +15,21 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.Optional;
 
 @Controller
 public class EquipamentoController {
 
-    @Autowired
         private EquipamentoServiceImple equipamentoServiceImple;
 
-        @GetMapping("/equipamento/lista-equipamento")
-        public ModelAndView listarProduto(ModelMap model) {
+    @Autowired
+    public EquipamentoController(EquipamentoServiceImple equipamentoServiceImple) {
+        this.equipamentoServiceImple = equipamentoServiceImple;
+    }
+
+    @GetMapping("/equipamento/lista-equipamento")
+        public ModelAndView listarProduto(ModelMap model ,RedirectAttributes attr) throws SQLException {
         model.addAttribute("equipamentos", equipamentoServiceImple.lista());
         return new ModelAndView("equipamento/listaequipamento", model);
     }
@@ -40,14 +45,14 @@ public class EquipamentoController {
         if (result.hasErrors()) {
             return "equipamento/cadastroequipamento";
         }
-        equipamentoServiceImple.salvar(equipamento);
-        attr.addFlashAttribute("mensagem", "Equipamento cadastrado  com sucesso.");
+       String mensagem = equipamentoServiceImple.salvar(equipamento);
+        attr.addFlashAttribute("mensagem", mensagem);
         return "redirect:/equipamento/lista-equipamento";
 
     }
 
     @GetMapping("/equipamento/{id}/atualizar-equipamento")
-    public ModelAndView preAtualizar(@PathVariable("id") long id, ModelMap model) {
+    public ModelAndView preAtualizar(@PathVariable("id") long id, ModelMap model) throws SQLException {
        Equipamento equipamento = equipamentoServiceImple.RecuperarPorId(id).get();
         model.addAttribute("equipamento", equipamento);
         return new ModelAndView("equipamento/editarequipamento",model);
@@ -59,13 +64,13 @@ public class EquipamentoController {
             return new ModelAndView("/equipamento/editarequipamento");
         }
 
-        equipamentoServiceImple.atualizar(equipamento);
-        attr.addFlashAttribute("mensagem", "Equipamento atualizado com sucesso.");
+        String mensagem = equipamentoServiceImple.atualizar(equipamento);
+        attr.addFlashAttribute("mensagem", mensagem);
         return new ModelAndView("redirect:/equipamento/lista-equipamento");
     }
 
     @GetMapping("/equipamento/{id}/visualizar-equipamento")
-    public ModelAndView visualizarProduto(@PathVariable("id") long id, ModelMap model) {
+    public ModelAndView visualizarProduto(@PathVariable("id") long id, ModelMap model) throws SQLException {
         Equipamento equipamento = equipamentoServiceImple.RecuperarPorId(id).get();
         model.addAttribute("equipamento", equipamento);
         return new ModelAndView("equipamento/visualizarequipamento",model);
@@ -74,9 +79,9 @@ public class EquipamentoController {
 
 
     @GetMapping("/equipamento/{id}/remover-equipamento")
-    public String remover (@PathVariable("id") long id , RedirectAttributes attr){
-        equipamentoServiceImple.Excluir(id);
-        attr.addFlashAttribute("mensagem", "Equipamento  Excluido  com sucesso.");
+    public String remover (@PathVariable("id") long id , RedirectAttributes attr) {
+       String mensagem =  equipamentoServiceImple.Excluir(id);
+        attr.addFlashAttribute("mensagem", mensagem);
         return "redirect:/equipamento/lista-equipamento";
     }
 

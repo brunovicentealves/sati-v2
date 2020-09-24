@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymelead.org/thymeleaf-extras-springsecurity4"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title>Visualizar Solicitação </title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript"
+            src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link type="text/css" rel="stylesheet"
+          th:href="@{https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css}" />
+    <link type="text/css" rel="stylesheet"
+          th:href="@{https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css}" />
+    <script type="text/javascript"
+            src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript"
+            src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+
+    <link href="/css/style.css" rel="stylesheet"/>
+
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="page-header text-center">
+        <h1>Visualizar Solicitação</h1>
+    </div>
+    <br>
+    <div th:if="${mensagem != null}">
+        <div class="alert alert-info" role="alert">
+            <span th:text="${mensagem}">mensagem</span>
+        </div>
+    </div>
+
+    <form  th:object="${historico}" >
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label >Nome Completo :</label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"   placeholder="Nome" th:field="*{funcionario.nome}" >
+                </fieldset>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label >Função : </label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"  placeholder="Função" th:field="*{funcionario.nomeFuncao}">
+                </fieldset>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label >Centro Custo :</label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"   placeholder="Centro Custo" th:field="*{funcionario.centroCusto.codccusto}" >
+                </fieldset>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label >Nome da Obra : </label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"  placeholder="Obra" th:field="*{funcionario.centroCusto.nome}">
+                </fieldset>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label >Nome Equipamento : </label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"  placeholder="Nome Equipamento" th:field="*{equipamento.nomeEquipamento}">
+                </fieldset>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label >Descrição Equipamento : </label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"  placeholder="Descrição" th:field="*{equipamento.descricao}">
+                </fieldset>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label >Data Criação : </label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"  placeholder="Descrição" th:field="*{data}">
+                </fieldset>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label >Descrição Solicitação : </label>
+                <fieldset disabled>
+                    <input type="text"   class="form-control"  placeholder="Descrição" th:field="*{patrimonioEquipamento}">
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+
+</html>
