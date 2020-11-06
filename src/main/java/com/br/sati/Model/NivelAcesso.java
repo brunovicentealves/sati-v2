@@ -12,7 +12,7 @@ public class NivelAcesso implements GrantedAuthority {
     @Id
     private String nomeAcesso;
 
-    @ManyToMany(cascade= CascadeType.ALL)
+    @ManyToMany(cascade= CascadeType.PERSIST)
     private List<Usuario>usuarios = new ArrayList<>();
 
     public String getNomeAcesso() {

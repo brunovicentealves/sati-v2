@@ -25,7 +25,7 @@
 <body>
 <div layout:fragment="content">
     <div class="page-header text-center">
-        <h1>Solicitacao Equipamentos</h1>
+        <h1>Acompanhamento Solicitacao</h1>
     </div>
     <br>
     <div th:if="${mensagem != null}">
@@ -36,10 +36,6 @@
             </button>
         </div>
     </div>
-    <div>
-        <a class="btn btn-primary"  th:href="@{/solicitacao/cadastro-solicitacao}"> Nova Solicitação</a>
-    </div>
-    <br>
     <table id="todotable" class="table table-striped">
         <thead>
         <tr>
@@ -50,20 +46,22 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="solicitacao : ${solicitacoes}" th:object="${solicitacao}">
+        <tr th:each="solicitacao : ${solicitacoes}" th:object="${solicitacao}"  >
+
             <td class="texte-center"  th:text="${solicitacao.idSolicitacao}" ></td>
-            <td class="texte-center" th:text="${#dates.format(solicitacao.data, 'dd-MM-yyyy HH:mm')}"></td>
+            <td class="texte-center" th:text="${solicitacao.data}"></td>
             <td class="texte-center" th:text="${solicitacao.status}"></td>
             <td class="text-center" >
-                <a th:href="@{/solicitacao/{id}/visualizar-solicitacao(id=${solicitacao.idSolicitacao})}" >
-                    <img alt="Visualizar" th:src="@{/images/visualizar.png}"/>
-                </a>
-                <a th:href="@{/solicitacao/{id}/atualizar-solicitacao(id=${solicitacao.idSolicitacao})}" >
-                    <img alt="Editar" th:src="@{/images/editar.png}"/>
-                </a>
-                <a th:href="@{/solicitacao/{id}/remover-solicitacao(id=${solicitacao.idSolicitacao})}" onclick="return confirm('Deseja deletar?');" >
-                    <img  alt="Deletar" th:src="@{/images/excluir.png}"/></td>
-            </a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mudar Status
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" th:href="@{/solicitacao/{id}/solicitado-fornecedor(id=${solicitacao.idSolicitacao})}" >Solicitado ao fornecedor</a>
+                        <a class="dropdown-item"  th:href="@{/solicitacao/{id}/entregue-equipamento(id=${solicitacao.idSolicitacao})}" >Equipamento Entregue</a>
+                    </div>
+                </div>
+            </td>
         </tr>
 
         </tbody>

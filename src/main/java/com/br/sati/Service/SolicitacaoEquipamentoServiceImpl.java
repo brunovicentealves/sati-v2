@@ -59,7 +59,15 @@ public class SolicitacaoEquipamentoServiceImpl implements SolicitacaoEquipamento
     }
 
     public List<SolicitacaoEquipamento> listaSolicitacaoEquipamentoStatus(String status) throws SQLException{
-      return  solicitacaoEquipamentoRepository.findByStatusOrderByDataDesc(status);
+      return  solicitacaoEquipamentoRepository.findByStatusOrderByDataInicioDesc(status);
+    }
+
+    public Integer quantidadeSolicitacao(String status){
+        return solicitacaoEquipamentoRepository.quantidadeSolicitacaoAprovada(status);
+    }
+
+    public List<SolicitacaoEquipamento> listaSolicitacaoAprovadaeSolicitadoFornecedor(String status1,String status2) throws SQLException{
+        return solicitacaoEquipamentoRepository.solicitacaoAprovadoSolicitadoForncedor(status1,status2);
     }
 
 }

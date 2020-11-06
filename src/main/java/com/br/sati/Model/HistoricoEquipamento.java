@@ -24,7 +24,8 @@ public class HistoricoEquipamento {
     @NotBlank(message = "Preechar o campo com Patrimonio da Máquina")
     private String patrimonioEquipamento;
 
-    @NotNull
+    @Column(columnDefinition="DATE")
+    @Temporal(TemporalType.DATE)
     private Date data;
 
     private String logUsuario;
@@ -58,7 +59,7 @@ public class HistoricoEquipamento {
         return patrimonioEquipamento;
     }
 
-    public void setPatrimonioMaquina(String patrimonioEquipamento) {
+    public void setPatrimonioEquipamento(String patrimonioEquipamento) {
         this.patrimonioEquipamento = patrimonioEquipamento;
     }
 
@@ -68,5 +69,15 @@ public class HistoricoEquipamento {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+
+
+    public String getLogUsuario() {
+        return logUsuario;
+    }
+
+    public void setLogUsuario(String logUsuario) {
+        this.logUsuario = logUsuario;
     }
 }

@@ -1,5 +1,7 @@
 package com.br.sati.Model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,7 +22,7 @@ public class Usuario implements UserDetails, Serializable {
 
     private String senha;
 
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.PERSIST)
     @JoinTable(
             name = "usuario_acesso",
             joinColumns = @JoinColumn(

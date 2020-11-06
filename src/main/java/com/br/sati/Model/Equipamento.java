@@ -24,6 +24,10 @@ public class Equipamento implements Serializable {
     @OneToMany(mappedBy = "equipamento")
     private List<HistoricoEquipamento> historicoprodutoList;
 
+    @ManyToOne
+    @JoinColumn(name = "codCategoriaEquipamento", nullable = false)
+    private CategoriaEquipamento categoria;
+
     private Date data;
 
     public long getId() {
@@ -72,5 +76,13 @@ public class Equipamento implements Serializable {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public CategoriaEquipamento getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaEquipamento categoria) {
+        this.categoria = categoria;
     }
 }

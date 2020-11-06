@@ -3,6 +3,7 @@ package com.br.sati.Service;
 import com.br.sati.Model.Usuario;
 import com.br.sati.Repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,8 @@ public class UsuarioServiceImpl  implements UsuarioService{
 
      private UsuarioRepository usuarioRepository;
 
+
+
     @Autowired
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
@@ -21,6 +24,7 @@ public class UsuarioServiceImpl  implements UsuarioService{
     @Override
     public String salvarUsuario(Usuario usuario) {
         try {
+            usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
             usuarioRepository.save(usuario);
             return "Cadastrado com sucesso o usuário!";
         }catch (Exception e ){
@@ -51,10 +55,11 @@ public class UsuarioServiceImpl  implements UsuarioService{
     @Override
     public String ExcluirUsuario(String login) {
         try {
+
             usuarioRepository.deleteById(login);
             return "Excluido com Sucesso Usuario!";
         }catch (Exception e ){
-            return "Não possivel excluir porque o dados podem estar sendo usado em outra parte do sistema!";
+            return "Não possivel excluir porque o dados podem estar sendo usado em outra parte do sistema! --"+e.getMessage();
         }
 
     }

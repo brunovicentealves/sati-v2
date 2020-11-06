@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Nova Solicitacao </title>
+    <title>Editar Solicitacao </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript"
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -28,7 +28,7 @@
 <body>
 <div layout:fragment="content">
     <div class="page-header text-center">
-        <h1> Nova Solicitação de Equipamento</h1>
+        <h1> Editar Solicitação de Equipamento</h1>
     </div>
     <br>
     <div th:if="${mensagem != null}">
@@ -37,8 +37,9 @@
         </div>
     </div>
 
-    <form  th:action="@{/solicitacao/salvar-solicitacao}" th:object="${solicitacao}"  method="post" >
+    <form  th:action="@{/historico/editar-historico}" th:object="${historico}"  method="post" >
         <div class="form-row">
+            <input id="id" type="hidden" th:field="*{idHistorico}"/>
             <div class="col-md-6 mb-3">
                 <label >Funcionário:</label>
                 <select  class=" form-control js-example-basic-single"  th:field="*{funcionario}">
@@ -50,6 +51,13 @@
                 <select  class=" form-control js-example-basic-single" th:field="*{equipamento}" >
                     <option th:each="equipamento : ${equipamento}"   th:value="${equipamento.id}" th:text="${equipamento.nomeEquipamento+' - '+equipamento.descricao}" ></option>
                 </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-6 mb-3">
+                <label >Patrimonio Equipamento :</label>
+                <input class="form-control"  th:field="*{patrimonioEquipamento}"  >
+                <div th:if="${#fields.hasErrors('patrimonioEquipamento')}" th:errors="*{patrimonioEquipamento}"></div>
             </div>
         </div>
 

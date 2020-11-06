@@ -54,7 +54,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     public String ExcluirFuncionario(Long chapa) {
         try {
-
             funcionarioRepository.deleteById(chapa);
             return "Excluido o Funcionário com Sucesso";
         }catch (Exception e ){

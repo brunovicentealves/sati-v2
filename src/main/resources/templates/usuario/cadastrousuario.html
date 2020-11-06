@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Equipamentos </title>
+    <title>Usuário </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript"
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -25,7 +25,7 @@
 <body>
 <div layout:fragment="content">
     <div class="page-header text-center">
-        <h1>Equipamentos</h1>
+        <h1>Cadastro Usuário</h1>
     </div>
     <br>
     <div th:if="${mensagem != null}">
@@ -34,25 +34,31 @@
         </div>
     </div>
 
-    <form  th:action="@{/equipamento/salvar-equipamento}" th:object="${equipamento}"  method="post" >
-            <div class="form-row">
-            <div class="col-md-4 mb-3">
-                <input type="text" class="form-control"  placeholder="Nome" th:field="*{nomeEquipamento}" >
-                <div th:if="${#fields.hasErrors('nomeEquipamento')}" th:errors="*{nomeEquipamento}"></div>
+    <form  th:action="@{/usuario/salvar-usuario}" th:object="${usuario}"  method="post" >
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label >Login:</label>
+                <input type="text" class="form-control"  placeholder="Login" th:field="*{login}" >
+                <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
             </div>
-            <div class="col-md-4 mb-3">
-                <input type="text" class="form-control"  placeholder="Descrição" th:field="*{descricao}">
-                <div th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></div>
+            <div class="col-md-3 mb-3">
+                <label >Nome Completo:</label>
+                <input type="text" class="form-control"  placeholder="Nome Completo" th:field="*{nomeCompleto}">
+                <div th:if="${#fields.hasErrors('nomeCompleto')}" th:errors="*{nomeCompleto}"></div>
             </div>
-                <div class="col-md-4 mb-3">
-                    <select  class=" form-control js-example-basic-single" th:field="*{categoria}" >
-                        <option th:each="categoria : ${categorias}"   th:value="${categoria.id}" th:text="${categoria.nomeCategoria}" ></option>
-                    </select>
-                </div>
+            <div class="col-md-3 mb-3">
+                <label >Senha:</label>
+                <input type="text" class="form-control"  placeholder="Senha" th:field="*{senha}">
+                <div th:if="${#fields.hasErrors('senha')}" th:errors="*{senha}"></div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label >Acesso:</label>
+                <select  class=" form-control js-example-basic-single" th:field="*{nivelAcessos}" >
+                    <option th:each="nivelacesso : ${nivelacesso}"   th:value="${nivelacesso.nomeAcesso}" th:text="${nivelacesso.nomeAcesso}" ></option>
+                </select>
+            </div>
         </div>
-
-            <button class="btn btn-primary" type="submit">Salvar</button>
-
+        <button class="btn btn-primary" type="submit">Salvar</button>
     </form>
 </div>
 </body>

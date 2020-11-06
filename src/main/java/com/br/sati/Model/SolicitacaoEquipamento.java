@@ -1,5 +1,6 @@
 package com.br.sati.Model;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -15,9 +16,15 @@ public class SolicitacaoEquipamento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      private long idSolicitacao;
 
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     @Column(columnDefinition="DATE")
-    @Temporal(TemporalType.DATE)
-    private Date data;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataInicio;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    @Column(columnDefinition="DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date dataEncerramento;
 
     private String status;
 
@@ -47,11 +54,19 @@ public class SolicitacaoEquipamento implements Serializable {
     }
 
     public Date getData() {
-        return data;
+        return dataInicio;
     }
 
     public void setData(Date data) {
-        this.data = data;
+        this.dataInicio = data;
+    }
+
+    public Date getDataEncerramento() {
+        return dataEncerramento;
+    }
+
+    public void setDataEncerramento(Date dataEncerramento) {
+        this.dataEncerramento = dataEncerramento;
     }
 
     public String getStatus() {

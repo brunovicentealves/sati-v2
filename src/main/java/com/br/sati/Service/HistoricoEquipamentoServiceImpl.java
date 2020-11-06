@@ -3,9 +3,12 @@ package com.br.sati.Service;
 import com.br.sati.Model.HistoricoEquipamento;
 import com.br.sati.Repository.HistoricoEquipamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +20,13 @@ public class HistoricoEquipamentoServiceImpl implements HistoricoEquipamentoServ
 
     @Override
     public String salvarHistorico(HistoricoEquipamento historicoEquipamento) {
+
         try {
+            Date data = new Date();
+            historicoEquipamento.setData(data);
+            historicoEquipamento.setLogUsuario(SecurityContextHolder.getContext().getAuthentication().getName());
             historicoEquipamentoRepository.save(historicoEquipamento);
+
             return "Histórico Salvo com Sucesso";
         }catch (Exception e){
             return "Não foi possivel Salvar esse Histórico!"+e.getMessage();
