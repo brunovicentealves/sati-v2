@@ -1,5 +1,6 @@
 package com.br.sati.Service;
 
+import com.br.sati.Dto.Solicitacao;
 import com.br.sati.Model.Equipamento;
 import com.br.sati.Model.SolicitacaoEquipamento;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 public interface SolicitacaoEquipamentoService {
 
-    String salvarSolicitacaoEquipamento(SolicitacaoEquipamento solicitacaoEquipamento) throws SQLException;
+    String salvarSolicitacaoEquipamento(Solicitacao solicitacao) throws SQLException;
     List<SolicitacaoEquipamento> listaSolicitacaoEquipamento() throws SQLException;
     Optional<SolicitacaoEquipamento> RecuperarPorIdSolicitacaoEquipamento(Long idSolicitacao);
     String atualizarSolicitacaoEquipamento(SolicitacaoEquipamento solicitacaoEquipamento);

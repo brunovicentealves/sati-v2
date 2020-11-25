@@ -46,6 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/solicitacao/lista-solicitacaoaprovacao").hasAnyRole("ADMIN")
                 .antMatchers("/solicitacao/{id}/editar-reprovar").hasAnyRole("ADMIN")
                 .antMatchers("/solicitacao/{id}/editar-aprovar").hasAnyRole("ADMIN")
+                .antMatchers("/solicitacao/{id}/encarramento-solicitacao").hasAnyRole("ADMIN","USER")
+                .antMatchers("/solicitacao/encarramento-solicitacao").hasAnyRole("ADMIN","USER")
                 .antMatchers("/historico/{id}/visualizar-historico").hasAnyRole("ADMIN")
                 .antMatchers("/usuario/{id}/remover-usuario").hasAnyRole("ADMIN")
                 .antMatchers("/usuario/lista-usuario").hasAnyRole("ADMIN")

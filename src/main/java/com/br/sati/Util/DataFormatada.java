@@ -7,17 +7,16 @@ import java.util.Date;
 
 public class DataFormatada {
 
-    public static Date FormatandoData() throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date date = new Date();
-
-        return  formato.parse(dateFormat.format(date));
+    public static Date  formatandodata(String data ) throws ParseException {
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+       return df.parse(data);
     }
 
-    public static Date FormatandoPadrao(Date data) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-        return  formato.parse(dateFormat.format(data));
+    public static  Date gerarData() throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        return df.parse(dateFormat.format(date));
+
     }
 }

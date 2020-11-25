@@ -1,11 +1,14 @@
 package com.br.sati.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 @Component
 @Entity
@@ -16,14 +19,10 @@ public class SolicitacaoEquipamento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      private long idSolicitacao;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
-    @Column(columnDefinition="DATE")
-    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     private Date dataInicio;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
-    @Column(columnDefinition="DATE")
-    @Temporal(TemporalType.TIMESTAMP)
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
     private Date dataEncerramento;
 
     private String status;
@@ -59,6 +58,14 @@ public class SolicitacaoEquipamento implements Serializable {
 
     public void setData(Date data) {
         this.dataInicio = data;
+    }
+
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
     }
 
     public Date getDataEncerramento() {

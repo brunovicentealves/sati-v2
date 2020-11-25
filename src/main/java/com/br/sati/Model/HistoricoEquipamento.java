@@ -1,5 +1,7 @@
 package com.br.sati.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,16 +22,15 @@ public class HistoricoEquipamento {
     @JoinColumn(name = "codFuncionario",nullable = false)
     private Funcionario funcionario;
 
-    @NotNull
-    @NotBlank(message = "Preechar o campo com Patrimonio da Máquina")
     private String patrimonioEquipamento;
 
-    @Column(columnDefinition="DATE")
-    @Temporal(TemporalType.DATE)
-    private Date data;
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+    private Date dataCriacao;
+
+    @JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
+    private Date dataAlteracao;
 
     private String logUsuario;
-
 
     public long getIdHistorico() {
         return idHistorico;
@@ -63,15 +64,21 @@ public class HistoricoEquipamento {
         this.patrimonioEquipamento = patrimonioEquipamento;
     }
 
-    public Date getData() {
-        return data;
+    public Date getDataCriacao() {
+        return dataCriacao;
     }
 
-    public void setData(Date data) {
-        this.data = data;
+    public void setDataCriacao(Date dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
+    public Date getDataAlteracao() {
+        return dataAlteracao;
+    }
 
+    public void setDataAlteracao(Date dataAlteracao) {
+        this.dataAlteracao = dataAlteracao;
+    }
 
     public String getLogUsuario() {
         return logUsuario;

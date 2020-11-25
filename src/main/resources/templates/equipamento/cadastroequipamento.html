@@ -33,18 +33,20 @@
             <span th:text="${mensagem}">mensagem</span>
         </div>
     </div>
-
     <form  th:action="@{/equipamento/salvar-equipamento}" th:object="${equipamento}"  method="post" >
             <div class="form-row">
             <div class="col-md-4 mb-3">
-                <input type="text" class="form-control"  placeholder="Nome" th:field="*{nomeEquipamento}" >
+                <label>Nome Equipamento :</label>
+                <input type="text" class="form-control"  th:field="*{nomeEquipamento}" >
                 <div th:if="${#fields.hasErrors('nomeEquipamento')}" th:errors="*{nomeEquipamento}"></div>
             </div>
             <div class="col-md-4 mb-3">
-                <input type="text" class="form-control"  placeholder="Descrição" th:field="*{descricao}">
+                <label>Descrição</label>
+                <input type="text" class="form-control"   th:field="*{descricao}">
                 <div th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"></div>
             </div>
                 <div class="col-md-4 mb-3">
+                    <label>Categoria :</label>
                     <select  class=" form-control js-example-basic-single" th:field="*{categoria}" >
                         <option th:each="categoria : ${categorias}"   th:value="${categoria.id}" th:text="${categoria.nomeCategoria}" ></option>
                     </select>

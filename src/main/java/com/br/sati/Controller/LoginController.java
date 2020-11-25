@@ -28,8 +28,8 @@ public class LoginController {
         model.addAttribute("solicitacaoaprovada",solicitacaoEquipamentoServiceImpl.quantidadeSolicitacao("Aprovado"));
         model.addAttribute("solicitaAguardandoAprovacao",solicitacaoEquipamentoServiceImpl.quantidadeSolicitacao("Aguardando Aprovação"));
         model.addAttribute("solicitadoFornecedor",solicitacaoEquipamentoServiceImpl.quantidadeSolicitacao("Solicitado ao Fornecedor"));
-        model.addAttribute("entregueequipamento",solicitacaoEquipamentoServiceImpl.quantidadeSolicitacao("Entregue Equipamento"));
-        model.addAttribute("solicitacoes",solicitacaoEquipamentoServiceImpl.listaSolicitacaoEquipamentoStatus("Aprovado"));
+        model.addAttribute("entregueequipamento",solicitacaoEquipamentoServiceImpl.quantidadeSolicitacaoaMesAberta());
+        model.addAttribute("solicitacoes",solicitacaoEquipamentoServiceImpl.solicitacaoprioridade());
         return new ModelAndView("home", model);
     }
 

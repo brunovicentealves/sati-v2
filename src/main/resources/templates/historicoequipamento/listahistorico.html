@@ -44,7 +44,7 @@
             <th class="text-center">Funcionario</th>
             <th class="text-center">Patrimonio Equipamento</th>
             <th class="text-center">Data</th>
-            <th class="text-center" style='width: 15%'>Ações</th>
+            <th class="text-center" style='width: 20%'>Ações</th>
         </tr>
         </thead>
         <tbody>
@@ -52,7 +52,7 @@
             <td th:text="${historico.equipamento.nomeEquipamento}"></td>
             <td th:text="${historico.funcionario.nome}"></td>
             <td th:text="${historico.patrimonioEquipamento}"></td>
-            <td th:text="${historico.data}"></td>
+            <td th:text="${#dates.format(historico.dataCriacao,'dd-MM-yyyy HH:mm')}"></td>
             <td class="text-center" >
                 <a th:href="@{/historico/{id}/visualizar-historico(id=${historico.idHistorico})}" >
                     <img  alt="Visualizar" th:src="@{/images/visualizar.png}"/>
@@ -61,8 +61,14 @@
                     <img alt="Editar" th:src="@{/images/editar.png}"/>
                 </a>
                 <a th:href="@{/historico/{id}/remover-historico(id=${historico.idHistorico})}" onclick="return confirm('Deseja deletar?');" >
-                    <img alt="Deletar" th:src="@{/images/excluir.png}"/></td>
-            </a>
+                    <img alt="Deletar" th:src="@{/images/excluir.png}"/>
+                </a>
+                <a th:href="@{/historico/export}" target="_blank" >
+                    <img alt="Editar" th:src="@{/images/pdf.png}"/>
+                </a>
+            </td>
+
+
         </tr>
         </tbody>
     </table>

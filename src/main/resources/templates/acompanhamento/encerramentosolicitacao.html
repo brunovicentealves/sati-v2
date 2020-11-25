@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <title>Nova Solicitacao </title>
+    <title>Editar Solicitacao </title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <script type="text/javascript"
             src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -21,7 +21,6 @@
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.11/jquery.mask.min.js"></script>
 
@@ -31,50 +30,68 @@
 <body>
 <div layout:fragment="content">
     <div class="page-header text-center">
-        <h1> Nova Solicitação de Equipamento</h1>
+        <h1> Encerramento Solicitação Equipamento</h1>
     </div>
     <br>
-    <div th:if="${mensagem != null}">
-        <div class="alert alert-info" role="alert">
-            <span th:text="${mensagem}">mensagem</span>
-        </div>
-    </div>
-
-    <form  th:action="@{/solicitacao/salvar-solicitacao}" th:object="${solicitacao}"  method="post" >
+    <form  th:action="@{/solicitacao/encerramento-solicitacao}" th:object="${solicitacao}"  method="post" >
         <div class="form-row">
-            <div class="col-md-6 mb-3">
+            <input id="id" type="hidden" th:field="*{idSolicitacao}"/>
+            <div class="col-md-2 mb-3">
+                <fieldset disabled>
+                <label >Chapa:</label>
+                <input type="text" class="form-control"   th:field="*{funcionarioChapa}">
+                </fieldset>
+            </div>
+            <div class="col-md-2 mb-3">
+                <fieldset disabled>
+                <label >Centro Custo:</label>
+                <input type="text" class="form-control"   th:field="*{funcionarioCentroCustoNome}">
+                </fieldset>
+            </div>
+            <div class="col-md-4 mb-3">
+                <fieldset disabled>
                 <label >Funcionário:</label>
-                <select  class=" form-control js-example-basic-single"  th:field="*{idFuncionario}">
-                    <option th:each="funcionario : ${funcionario}"  th:value="${funcionario.chapa}" th:text="${funcionario.centroCusto.codccusto+' - '+funcionario.nome}" ></option>
-                </select>
+                <input type="text" class="form-control"   th:field="*{funcionarioNome}">
+                </fieldset>
+            </div>
+            <div class="col-md-4 mb-3">
+                <fieldset disabled>
+                <label >Equipamento:</label>
+                <input type="text" class="form-control"   th:field="*{equipamentoNome}">
+                </fieldset>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-md-12 mb-3">
+                <fieldset disabled>
+                <label >Descrição</label>
+                <textarea class="form-control"  th:field="*{descricao}"  ></textarea>
+                </fieldset>
             </div>
             <div class="col-md-6 mb-3">
-                <label >Equipamento:</label>
-                <select  class=" form-control js-example-basic-single" th:field="*{idEquipamento}" >
-                    <option th:each="equipamento : ${equipamento}"   th:value="${equipamento.id}" th:text="${equipamento.nomeEquipamento+' - '+equipamento.descricao}" ></option>
-                </select>
+                <fieldset disabled>
+                <label >Data da Abertura Solicitação  :</label>
+                <input type="text" class="form-control"  th:field="*{dataInicio}"  >
+                </fieldset>
             </div>
-            <div class="col-md-12 mb-3">
-                <textarea type="text" class="form-control"  placeholder="Descrição" th:field="*{descricao}"></textarea>
+            <div class="col-md-6 mb-3">
+                <label >Data de Encerramento Solicitação  :</label>
+                <input type="text" class="form-control"  name="data" id="data"  th:field="*{dataEncerramento}"  >
             </div>
-            <div class="col-md-12 mb-3">
-                <label>Data</label>
-                <input type="text" name="data" id="data" class="form-control" placeholder="00-00-0000 00:00:00"  th:field="*{dataInicio}" >
-            </div>
-
         </div>
 
-        <button class="btn btn-primary" type="submit">Salvar</button>
+        <button class="btn btn-primary text-right" type="submit" >Encerrar Solicitação</button>
+
     </form>
     <script type="text/javascript">
 $(document).ready(function() {
     $('.js-example-basic-single').select2();
 });
 </script>
+    </script>
     <script type="text/javascript">
     $("#data").mask("00-00-0000 00:00:00");
 </script>
-
 </div>
 </body>
 </html>

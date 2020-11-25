@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static com.br.sati.Util.DataFormatada.gerarData;
+
 @Service
 public class HistoricoEquipamentoServiceImpl implements HistoricoEquipamentoService {
 
@@ -22,11 +24,9 @@ public class HistoricoEquipamentoServiceImpl implements HistoricoEquipamentoServ
     public String salvarHistorico(HistoricoEquipamento historicoEquipamento) {
 
         try {
-            Date data = new Date();
-            historicoEquipamento.setData(data);
+            historicoEquipamento.setDataCriacao(gerarData());
             historicoEquipamento.setLogUsuario(SecurityContextHolder.getContext().getAuthentication().getName());
             historicoEquipamentoRepository.save(historicoEquipamento);
-
             return "Histórico Salvo com Sucesso";
         }catch (Exception e){
             return "Não foi possivel Salvar esse Histórico!"+e.getMessage();

@@ -7,7 +7,12 @@ import com.br.sati.Service.EquipamentoServiceImple;
 import com.br.sati.Service.FuncionarioServiceImpl;
 import com.br.sati.Service.HistoricoEquipamentoService;
 import com.br.sati.Service.HistoricoEquipamentoServiceImpl;
+import com.br.sati.Util.GerarPdfReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
 import java.sql.SQLException;
 
 @Controller
@@ -74,7 +80,7 @@ public class HIstoricoEquipamentoController {
             return new ModelAndView("/historicoequipamento/editarhistorico");
         }
         HistoricoEquipamento historicoEquipamento1= historicoEquipamentoServiceimpl.RecuperarPorIdHistorico(historicoEquipamento.getIdHistorico()).get();
-        historicoEquipamento.setData(historicoEquipamento1.getData());
+        historicoEquipamento.setDataAlteracao(historicoEquipamento1.getDataCriacao());
         historicoEquipamento.setLogUsuario(historicoEquipamento.getLogUsuario());
         String mensagem= historicoEquipamentoServiceimpl.atualizarHistorico(historicoEquipamento);
         attr.addFlashAttribute("mensagem", mensagem);
@@ -95,5 +101,18 @@ public class HIstoricoEquipamentoController {
         HistoricoEquipamento historicoEquipamento = historicoEquipamentoServiceimpl.RecuperarPorIdHistorico(id).get();
         model.addAttribute("historico", historicoEquipamento);
         return new ModelAndView("historicoequipamento/visualizarhistorico",model);
+    }
+
+    @GetMapping("/export")
+    public ResponseEntity<InputStreamResource> playlistReport(){
+        ByteArrayInputStream bis = GerarPdfReport.gerarPdfContrato();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=Contrato.pdf");
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(new InputStreamResource(bis));
     }
 }

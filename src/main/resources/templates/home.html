@@ -80,13 +80,17 @@
         </div>
     </div>
     </div>
-        <table id="todotable" class="table table-striped  shadow p-3 mb-12 bg-white rounded">
+    <div class="shadow p-3 mb-12 bg-white rounded">
+        <div class="text-center">
+            <h2>Solicitações Abertas</h2>
+        </div>
+        <table id="todotable" class="table table-striped ">
             <thead>
             <tr>
                 <th class="text-center">Nº_Solicitação</th>
                 <th class="text-center">Data</th>
                 <th class="text-center">Status</th>
-                <th class="text-center" style='width: 15%'>Ações</th>
+                <th class="text-center" style='width: 15%'>Visualizar</th>
             </tr>
             </thead>
             <tbody>
@@ -98,15 +102,13 @@
                     <a th:href="@{/solicitacao/{id}/visualizar-solicitacao(id=${solicitacao.idSolicitacao})}" >
                         <img alt="Visualizar" th:src="@{/images/visualizar.png}"/>
                     </a>
-                    <a th:href="@{/solicitacao/{id}/atualizar-solicitacao(id=${solicitacao.idSolicitacao})}" >
-                        <img alt="Editar" th:src="@{/images/editar.png}"/>
-                    </a>
-                    <a th:href="@{/solicitacao/{id}/remover-solicitacao(id=${solicitacao.idSolicitacao})}" onclick="return confirm('Deseja deletar?');" >
-                        <img  alt="Deletar" th:src="@{/images/excluir.png}"/></td>
+                    </td>
                 </a>
             </tr>
             </tbody>
         </table>
+
+    </div>
 
     <script type="text/javascript">
 		$(document).ready(function() {

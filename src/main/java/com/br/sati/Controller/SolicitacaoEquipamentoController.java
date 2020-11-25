@@ -1,6 +1,8 @@
 package com.br.sati.Controller;
 
 
+import com.br.sati.Dto.EncerramentoSolicitacao;
+import com.br.sati.Dto.Solicitacao;
 import com.br.sati.Model.SolicitacaoEquipamento;
 import com.br.sati.Service.EquipamentoServiceImple;
 import com.br.sati.Service.FuncionarioServiceImpl;
@@ -12,6 +14,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,11 +26,9 @@ import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.util.Date;
+import java.text.SimpleDateFormat;
 
-
-import static com.br.sati.Util.DataFormatada.FormatandoData;
-import static com.br.sati.Util.DataFormatada.FormatandoPadrao;
+import static com.br.sati.Util.DataFormatada.formatandodata;
 
 @Controller
 @RequestMapping("/solicitacao")
@@ -60,24 +61,16 @@ public class SolicitacaoEquipamentoController {
     }
 
     @GetMapping("/cadastro-solicitacao")
-    public ModelAndView preSalvarSolicitacao (@ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento , ModelMap model) throws SQLException {
+    public ModelAndView preSalvarSolicitacao (@ModelAttribute("solicitacao")Solicitacao solicitacao, ModelMap model) throws SQLException {
         model.addAttribute("equipamento",equipamentoServiceImpl.lista());
         model.addAttribute("funcionario",funcionarioServiceImpl.listaFuncionario());
         return new ModelAndView("solicitacao/cadastrosolicitacao",model);
     }
 
     @PostMapping("/salvar-solicitacao")
-    public String salvarSolicitacao(@Valid @ModelAttribute("solicitacao") SolicitacaoEquipamento solicitacaoEquipamento, BindingResult result, RedirectAttributes attr) throws SQLException, ParseException {
-        if (result.hasErrors()) {
-            return "/solicitacao/cadastrosolicitacao";
-        }
-
-        solicitacaoEquipamento.setStatus("Aguardando Aprovação");
-        solicitacaoEquipamento.setData(FormatandoData());
-      String mensagem = solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
-        attr.addFlashAttribute("mensagem", mensagem);
+    public String salvarSolicitacao(@Valid @ModelAttribute("solicitacao") Solicitacao solicitacao, BindingResult result, RedirectAttributes attr) throws SQLException, ParseException {
+        solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacao);
         return "redirect:/solicitacao/lista-solicitacao";
-
     }
 
     @GetMapping("/{id}/atualizar-solicitacao")
@@ -111,9 +104,6 @@ public class SolicitacaoEquipamentoController {
         return new ModelAndView("solicitacao/visualizacaosolicitacao",model);
     }
 
-
-
-
     @GetMapping("/{id}/remover-solicitacao")
     public String removerSolictacao (@PathVariable("id") long id , RedirectAttributes attr){
        String mensagem= solicitacaoEquipamentoService.ExcluirSolicitacaoEquipamento(id);
@@ -135,7 +125,7 @@ public class SolicitacaoEquipamentoController {
 
        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
        solicitacaoEquipamento.setStatus("Aprovado");
-       solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
+       solicitacaoEquipamentoService.atualizarSolicitacaoEquipamento(solicitacaoEquipamento);
 
         attr.addFlashAttribute("mensagem", "Alterado Status com sucesso.");
 
@@ -147,7 +137,7 @@ public class SolicitacaoEquipamentoController {
 
         SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
         solicitacaoEquipamento.setStatus("Reprovado");
-        solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
+        solicitacaoEquipamentoService.atualizarSolicitacaoEquipamento(solicitacaoEquipamento);
 
         attr.addFlashAttribute("mensagem", "Alterado com sucesso.");
 
@@ -159,36 +149,38 @@ public class SolicitacaoEquipamentoController {
 
         SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
         solicitacaoEquipamento.setStatus("Solicitado ao Fornecedor");
-        solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
+        solicitacaoEquipamentoService.atualizarSolicitacaoEquipamento(solicitacaoEquipamento);
 
         attr.addFlashAttribute("mensagem", "Alterado Status com sucesso.");
 
         return "redirect:/solicitacao/lista-solicitacao-acompanhamento";
     }
 
-    @GetMapping("/{id}/entregue-equipamento")
-    public String entregueEquipamento (@PathVariable("id") long id ,RedirectAttributes attr) throws SQLException {
+    @GetMapping ("/{id}/encerramento-solicitacao")
+    public ModelAndView entregueEquipamento (@PathVariable("id") long id , @ModelAttribute("solicitacao") EncerramentoSolicitacao encerramentoSolicitacao, ModelMap model) {
+        SolicitacaoEquipamento solicitacao = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
+        EncerramentoSolicitacao encerramento = new EncerramentoSolicitacao();
 
-        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(id).get();
+        encerramento.setIdSolicitacao(solicitacao.getIdSolicitacao());
+        encerramento.setEquipamentoNome(solicitacao.getEquipamento().getNomeEquipamento());
+        encerramento.setFuncionarioChapa(solicitacao.getFuncionario().getChapa());
+        encerramento.setFuncionarioNome(solicitacao.getFuncionario().getNome());
+        encerramento.setDataInicio(solicitacao.getDataInicio());
+        encerramento.setDescricao(solicitacao.getDescricao());
+        encerramento.setFuncionarioCentroCustoNome(solicitacao.getFuncionario().getCentroCusto().getNome());
+
+        model.addAttribute("solicitacao", encerramento);
+        return new ModelAndView("acompanhamento/encerramentosolicitacao",model);
+    }
+
+    @PostMapping("/encerramento-solicitacao")
+    public ModelAndView efeitvarEncerramentoSolicitacao(@Valid @ModelAttribute("solicitacao") EncerramentoSolicitacao encerramentoSolicitacao, BindingResult result, RedirectAttributes attr) throws ParseException {
+        SolicitacaoEquipamento solicitacaoEquipamento = solicitacaoEquipamentoService.RecuperarPorIdSolicitacaoEquipamento(encerramentoSolicitacao.getIdSolicitacao()).get();
+        solicitacaoEquipamento.setDataEncerramento(formatandodata(encerramentoSolicitacao.getDataEncerramento()));
         solicitacaoEquipamento.setStatus("Entregue Equipamento");
-        solicitacaoEquipamentoService.salvarSolicitacaoEquipamento(solicitacaoEquipamento);
-
-        attr.addFlashAttribute("mensagem", "Alterado Status com sucesso.");
-
-        return "redirect:/solicitacao/lista-solicitacao-acompanhamento";
-    }
-
-    @GetMapping("/export")
-    public ResponseEntity<InputStreamResource> playlistReport(){
-        ByteArrayInputStream bis = GerarPdfReport.gerarPdfContrato();
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=Contrato.pdf");
-        return ResponseEntity
-                .ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(new InputStreamResource(bis));
+        String mensagem = solicitacaoEquipamentoService.encerrarSolicitacaoEquipamento(solicitacaoEquipamento);
+        attr.addFlashAttribute("mensagem", mensagem);
+        return  new ModelAndView("redirect:/solicitacao/lista-solicitacao-acompanhamento");
     }
 
 }
